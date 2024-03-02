@@ -47,7 +47,25 @@ document.addEventListener('click', async () => {
           document.body.style.backgroundColor = 'rgb(' + r + ',  ' + g + ', ' + b + ')';
         }
 
+        let submit = js.s;
+        console.log("submit: " + submit);
+        if (submit == 0) {
+          checkValues(js);
+        }
+
   
       }
     }
   };
+
+  function checkValues(js) {
+    if (js.r == js.rG && js.g == js.gG && js.b == js.bG) {
+      console.log("CORRECT");
+    } else if ((js.r > js.rG - 10 && js.r < js.rG + 10) && (js.g > js.gG - 10 && js.g < js.gG + 10) && (js.b > js.bG - 10 && js.b < js.bG + 10)) {
+
+            console.log("CLOSE ENOUGH");
+
+    } else {
+      console.log("WRONG");
+    }
+  }
