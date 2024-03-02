@@ -27,18 +27,20 @@ document.addEventListener('click', async () => {
       }
       if (value) {
         console.log("Value: %s\n", value);
-        console.log(typeof(value));
+        
         if (!value.includes('}') || !value.includes('{')) {
             continue;
         }
         console.log("passed");
         let j = JSON.stringify(value);
+        
+        j = j.replaceAll("\\", "");
+        j = j.slice(1, j.indexOf('}') + 1);
+        console.log("J: %s\n", j);
         let js = JSON.parse(j);
-
-
-
-        console.log("j: ", js);
-        //console.log("poten: ", parseInt(js.p));
+      
+        console.log(typeof(js));
+        console.log("poten: %d", parseInt(js.p));
         parsedVal = parseInt(value);
         if (!isNaN(parsedVal)) {
           //console.log("parsedVal: " + parsedVal);
