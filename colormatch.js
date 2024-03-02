@@ -26,28 +26,27 @@ document.addEventListener('click', async () => {
         break;
       }
       if (value) {
-        console.log("Value: %s\n", value);
-        
+        console.log("value: " + value)
         if (!value.includes('}') || !value.includes('{')) {
             continue;
         }
-        console.log("passed");
-        let j = JSON.stringify(value);
         
+        let j = JSON.stringify(value);
         j = j.replaceAll("\\", "");
         j = j.slice(1, j.indexOf('}') + 1);
-        console.log("J: %s\n", j);
+        console.log("J: " + j);
         let js = JSON.parse(j);
-      
-        console.log(typeof(js));
-        console.log("poten: %d", parseInt(js.p));
-        parsedVal = parseInt(value);
-        if (!isNaN(parsedVal)) {
-          //console.log("parsedVal: " + parsedVal);
-          counterVal += parseInt(value)/100.0;
-          redVal = (1+Math.sin(counterVal)) * (255/2);
-          document.body.style.backgroundColor = 'rgb(' + redVal + ',  60, 50)';
+        
+        //console.log("poten: %d", js.p);
+        let r = js.r;
+        let g = js.g;
+        let b = js.b;
+        if (!isNaN(r) && !isNaN(g) && !isNaN(b)) {
+          console.log("red: " + r);
+          //counterVal += parseInt(value)/100.0;
+          document.body.style.backgroundColor = 'rgb(' + r + ',  ' + g + ', ' + b + ')';
         }
+
   
       }
     }
