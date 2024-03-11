@@ -39,6 +39,7 @@ void loop() {
     rGoal = random(0, 256);
     gGoal = random(0, 256);
     bGoal = random(0, 256);
+    mode = 0;
     tft.fillScreen(TFT_BLACK);
   }
 
@@ -46,7 +47,7 @@ void loop() {
   //changing mode
   pinMode(xyzPins[1], INPUT_PULLUP); 
   switchMode = digitalRead(xyzPins[1]); //15
-  sensorVals["switch"] = switchMode;
+  sensorVals["sw"] = switchMode;
   if (switchMode == 0) {
     if (mode == 0) {
       mode = 1;
@@ -59,15 +60,15 @@ void loop() {
   }
 
   //Printing and sending GOAL R, G, B values
-  sensorVals["rG"] = rGoal;
-  sensorVals["gG"] = gGoal;
-  sensorVals["bG"] = bGoal;
+  sensorVals["r"] = rGoal;
+  sensorVals["g"] = gGoal;
+  sensorVals["b"] = bGoal;
   tft.drawString("(" + String(rGoal) + ", " + String(gGoal) + ", " + String(bGoal) + ")", 30, 50, 4);
 
   
   //mode: 0 == red, 1 == green, 2 == blue
   //changing color controlled
-  sensorVals["mode"] = mode;
+  sensorVals["m"] = mode;
   if (mode == 0) {
       tft.drawString("R", 100, 90, 4);
   } else if (mode == 1) {
@@ -90,23 +91,13 @@ void loop() {
   } else if (v > 255) {
     v = 255;
   }
-  sensorVals["colorVal"] = v;
-  
-  
-  //sensorVals["b"] = bVal;
+  sensorVals["cv"] = v;
 
   
   serializeJson(sensorVals, Serial);
   Serial.println();
   
-  delay(1000);
+  delay(500);
 
-  //Serial.printf("Button Val: %d\n", bVal);
-  //tft.drawString(String(pVal), 10, 10, 4);
-  //Serial.printf("P Value: %d\n", v);
-  //int xVal = analogRead(xyzPins[0]);
-  //int yVal = analogRead(xyzPins[1]);
-  //int zVal = digitalRead(xyzPins[2]);
-  //Serial.printf("X,Y,Z: %d,\t%d,\t%d\n", xVal, yVal, zVal);
  
 }

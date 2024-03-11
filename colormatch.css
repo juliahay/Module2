@@ -1,3 +1,19 @@
 body {
     background-color: rgb(255, 0, 9);
 }
+
+#newMode {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+#newColor {
+    font-size: 250px;
+}
+
+#colorValue {
+    font-size: 150px;
+}
