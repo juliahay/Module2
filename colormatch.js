@@ -18,6 +18,7 @@ document.addEventListener('click', async () => {
   let green = 0;
   let blue = 0;
   let continueSwitch = false;
+  let hint = [];
   async function readLoop() {
     counterVal = 0;
     while (true) {
@@ -46,10 +47,16 @@ document.addEventListener('click', async () => {
         let colorValue = js.cv;
         let submit = js.s;
 
-        //check if code should be submitted
-        console.log("submit: " + submit);
+        //give hint if pushed, submit if held down
         if (submit == 0) {
-          checkValues(js);
+          getHint(mode);
+
+          hint.push(submit);
+          if (hint.length > 4) {
+            checkValues(js);
+            hint = [];
+          }
+          
         }
 
         //check if mode has switched and wait until it reaches last set value
@@ -68,6 +75,11 @@ document.addEventListener('click', async () => {
             color = "B";
           }
           //create div that prints new color and current color value
+          if (red < 60 && green < 60 && blue < 60) {
+            document.body.style.color = "rgb(" + 255 + ", " + 255 + ", " + 255 + ")";
+          } else {
+            document.body.style.color = "rgb(" + 0 + ", " + 0 + ", " + 0 + ")";;
+          }
           document.getElementById('newColor').innerHTML = color;
           document.getElementById('colorValue').innerHTML = currentVal;
           
@@ -104,6 +116,7 @@ document.addEventListener('click', async () => {
   function checkValues(js) {
     if (js.r == red && js.g == green && js.b == blue) {
       console.log("CORRECT");
+
     } else if ((js.r > red - 5 && js.r < red + 5) && (js.g > green - 5 && js.g < green + 5) && (js.b > blue - 5 && js.b < blue + 5)) {
 
             console.log("CLOSE ENOUGH");
@@ -111,4 +124,14 @@ document.addEventListener('click', async () => {
     } else {
       console.log("WRONG");
     }
+  }
+
+  function getHint(mode) {
+    if (mode == 0) {
+      console.log("RED HINT: " + red);
+    } else if (mode == 1) {
+      console.log("GREEN HINT: " + green);
+    } else if (mode == 2) {
+      console.log("BLUE HINT: " + blue);
+    }  
   }
