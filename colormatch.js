@@ -1,3 +1,4 @@
+let connected = false;
 //when the user clicks anywhere on the page
 document.addEventListener('click', async () => {
     // Prompt user to select any serial port.
@@ -19,6 +20,7 @@ document.addEventListener('click', async () => {
   let blue = 0;
   let continueSwitch = false;
   let hint = [];
+  let hintOn = false;
   async function readLoop() {
     counterVal = 0;
     while (true) {
@@ -41,6 +43,11 @@ document.addEventListener('click', async () => {
         console.log("J: " + j);
         let js = JSON.parse(j);
 
+        if (connected == false) {
+          removeDiv("opening");
+          connected = true;
+        }
+        
         //get json values
         let switchMode = js.sw;
         let mode = js.m;
@@ -49,10 +56,14 @@ document.addEventListener('click', async () => {
 
         //give hint if pushed, submit if held down
         if (submit == 0) {
-          getHint(mode);
+          if (hintOn == false) {
+            getHint(mode);
+          }
+          
 
           hint.push(submit);
           if (hint.length > 4) {
+            removeDiv("hint");
             checkValues(js);
             hint = [];
           }
@@ -75,7 +86,7 @@ document.addEventListener('click', async () => {
             color = "B";
           }
           //create div that prints new color and current color value
-          if (red < 60 && green < 60 && blue < 60) {
+          if (red < 130 && green < 130 && blue < 130) {
             document.body.style.color = "rgb(" + 255 + ", " + 255 + ", " + 255 + ")";
           } else {
             document.body.style.color = "rgb(" + 0 + ", " + 0 + ", " + 0 + ")";;
@@ -113,25 +124,93 @@ document.addEventListener('click', async () => {
     }
   };
 
-  function checkValues(js) {
+  function checkValues(js) { //not working
     if (js.r == red && js.g == green && js.b == blue) {
       console.log("CORRECT");
+      resultPopup("CORRECT!");
 
     } else if ((js.r > red - 5 && js.r < red + 5) && (js.g > green - 5 && js.g < green + 5) && (js.b > blue - 5 && js.b < blue + 5)) {
-
-            console.log("CLOSE ENOUGH");
-
+      console.log("CLOSE ENOUGH");
+      resultPopup("CLOSE ENOUGH!");
     } else {
       console.log("WRONG");
+      resultPopup("INCORRECT!");
     }
+  }
+
+  const button = document.querySelector('btn');
+
+  // Add an event listener to the button that listens for the click event
+  button.addEventListener('click', function() {
+    // Display the prompt when the button is clicked
+    removeDiv("submit"); 
+    console.log("Play Again Button Pushed");
+  });
+
+  function resultPopup(result) {
+    let messageDiv = document.createElement('div');
+    messageDiv.className = 'popup';
+    messageDiv.id = 'submit';
+    document.body.appendChild(messageDiv);
+
+    let resultDiv = document.createElement('div');
+    resultDiv.id = 'result';
+    document.getElementById('submit').appendChild(resultDiv);
+
+    let answerDiv = document.createElement('div');
+    answerDiv.id = 'answer';
+    document.getElementById('submit').appendChild(answerDiv);
+
+    let buttonDiv = document.createElement('div');
+    buttonDiv.id = 'buttons';
+    document.getElementById('submit').appendChild(buttonDiv);
+
+    document.getElementById('result').innerHTML = result;
+    document.getElementById('answer').innerHTML += "Your Answer: (" + red + ", " + green + ", " + blue + ")"
+    document.getElementById('buttons').innerHTML = "<a href=\"index.html\"><button id=\"btn\">Play Again</button></a>"
+  }
+
+  function hintPopup(color) {
+    let hintDiv = document.createElement('div');
+    hintDiv.className = "popup";
+    hintDiv.id = 'hint';
+    document.body.appendChild(hintDiv);
+    console.log("HINT DIV")
+
+    if (color == "RED") {
+      console.log("RED HINT")
+      document.getElementById('hint').innerHTML = "RED VALUE: " + red;
+    } else if (color == "GREEN") {
+      console.log("GREEN HINT")
+      document.getElementById('hint').innerHTML = "GREEN VALUE: " + green;
+    } else if (color == "BLUE") {
+      console.log("BLUE HINT")
+      document.getElementById('hint').innerHTML = "BLUE VALUE: " + blue;
+    }
+
+    document.getElementById('hint').innerHTML += "<br>You have " + (4 - hint.length - 1) + " hints left.";;
   }
 
   function getHint(mode) {
     if (mode == 0) {
-      console.log("RED HINT: " + red);
+      hintPopup("RED");
     } else if (mode == 1) {
-      console.log("GREEN HINT: " + green);
+      hintPopup("GREEN");
     } else if (mode == 2) {
-      console.log("BLUE HINT: " + blue);
+      hintPopup("BLUE");
     }  
+    //wait 3 seconds and remove hint
+    setTimeout(() => {removeDiv("hint"); hintOn = false;}, 2000);
+    
+  }
+
+  function removeDiv(divType) {
+    if (divType == "hint") {
+      document.getElementById('hint').remove();
+    } else if (divType == "submit") {
+      document.getElementById('submit').remove();
+    } else if (divType == "opening") {
+      document.getElementById('opening').remove();
+    }
+    
   }
