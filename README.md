@@ -32,7 +32,7 @@ This code is for a game called Color Match. The goal of the game is to visualize
   - click on the page and select the port for your ESP32
     - If the "connect device to start game" message does not disappear, reload the page and try again.
   - From here the game should be operational!
-- 
+
 
 ## Further Documentation
 To read the full blog post regarding this installation, visit [here]()
