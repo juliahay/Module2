@@ -39,21 +39,25 @@ body {
     transform: translate(-50%, -50%);
     text-align: center;
     font-size: 30px;
+    color: black;
 }
 
 #hint {
     font-size: 30px;
     margin: 5px;
+    color: black;
 }
 
 #result {
     font-size: 50px;
     margin: 5px;
+    color: black;
 }
 
 #answer {
     font-size: 30px;
     margin: 5px;
+    color: black;
 }
 
 #buttons {

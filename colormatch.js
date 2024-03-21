@@ -32,7 +32,7 @@ document.addEventListener('click', async () => {
         break;
       }
       if (value) {
-        console.log("value: " + value)
+        console.log("value: " + value);
         if (!value.includes('}') || !value.includes('{')) {
             continue;
         }
@@ -41,7 +41,15 @@ document.addEventListener('click', async () => {
         j = j.replaceAll("\\", "");
         j = j.slice(1, j.indexOf('}') + 1);
         console.log("J: " + j);
-        let js = JSON.parse(j);
+        let js;
+
+        try {
+          js = JSON.parse(j);
+        } catch (error) {
+          console.log('Error parsing JSON:', error, js);
+          continue;
+        }
+        
 
         if (connected == false) {
           removeDiv("opening");
@@ -87,9 +95,9 @@ document.addEventListener('click', async () => {
           }
           //create div that prints new color and current color value
           if (red < 130 && green < 130 && blue < 130) {
-            document.body.style.color = "rgb(" + 255 + ", " + 255 + ", " + 255 + ")";
+            document.getElementById("newMode").style.color = "rgb(" + 255 + ", " + 255 + ", " + 255 + ")";
           } else {
-            document.body.style.color = "rgb(" + 0 + ", " + 0 + ", " + 0 + ")";;
+            document.getElementById("newMode").style.color = "rgb(" + 0 + ", " + 0 + ", " + 0 + ")";;
           }
           document.getElementById('newColor').innerHTML = color;
           document.getElementById('colorValue').innerHTML = currentVal;
@@ -126,14 +134,11 @@ document.addEventListener('click', async () => {
 
   function checkValues(js) { //not working
     if (js.r == red && js.g == green && js.b == blue) {
-      console.log("CORRECT");
       resultPopup("CORRECT!");
 
-    } else if ((js.r > red - 5 && js.r < red + 5) && (js.g > green - 5 && js.g < green + 5) && (js.b > blue - 5 && js.b < blue + 5)) {
-      console.log("CLOSE ENOUGH");
+    } else if ((js.r > red - 10 && js.r < red + 10) && (js.g > green - 10 && js.g < green + 10) && (js.b > blue - 10 && js.b < blue + 10)) {
       resultPopup("CLOSE ENOUGH!");
     } else {
-      console.log("WRONG");
       resultPopup("INCORRECT!");
     }
   }
@@ -175,16 +180,12 @@ document.addEventListener('click', async () => {
     hintDiv.className = "popup";
     hintDiv.id = 'hint';
     document.body.appendChild(hintDiv);
-    console.log("HINT DIV")
 
     if (color == "RED") {
-      console.log("RED HINT")
       document.getElementById('hint').innerHTML = "RED VALUE: " + red;
     } else if (color == "GREEN") {
-      console.log("GREEN HINT")
       document.getElementById('hint').innerHTML = "GREEN VALUE: " + green;
     } else if (color == "BLUE") {
-      console.log("BLUE HINT")
       document.getElementById('hint').innerHTML = "BLUE VALUE: " + blue;
     }
 
