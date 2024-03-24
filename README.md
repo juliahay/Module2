@@ -1,8 +1,7 @@
 # Module 2 - Interactive Devices
 This code is for a game called Color Match. The goal of the game is to visualize the correct color as indicated by given RGB values. The game uses a game controller made out of a ESP32 TTGO T-Display, three buttons, and a potentiometer. With this device, the user adjusts the potentiometer for either red, green, or blue values to try and get the color of the screen to align with the RGB values given. The device used can give the user a hint, submit their answer, change which color the user is affecting, or reset the values for a new game. 
 
-[ADD IMAGE]
-
+[IMG_9543.JPG]
 
 ## Materials
 - ESP32 TTGO T-Display
